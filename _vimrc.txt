@@ -1,0 +1,100 @@
+"           _
+"    __   _(_)_ __ ___  _ __ ___
+"    \ \ / / | '_ ` _ \| '__/ __|
+"  _  \ V /| | | | | | | | | (__
+" |_|  \_/ |_|_| |_| |_|_|  \___|
+"
+" Nicholas's .vimrc file
+"
+" MYVIMRC in ~
+"
+
+
+" BEGIN VUNDLE
+" :PluginInstall to install plugins named below
+" :PluginInstall! to reinstall plugins named below
+" :PluginUpdate to update plugins
+" 
+set nocompatible
+filetype off
+set rtp+=$HOME/vimfiles/bundle/Vundle.vim/
+call vundle#begin('$HOME/vimfiles/bundle/')
+Plugin 'VundleVim/Vundle.vim'
+Plugin 'tpope/vim-fugitive'
+Plugin 'vim-latex/vim-latex'
+Plugin 'junegunn/fzf'
+Plugin 'w0rp/ale'
+"Plugin 'anyakichi/vim-surround'
+Plugin 'scrooloose/nerdtree'
+Plugin 'itchyny/lightline.vim'
+Plugin 'terryma/vim-multiple-cursors'
+Plugin 'tpope/vim-surround'
+Plugin 'tpope/vim-repeat'
+Plugin 'flazz/vim-colorschemes'
+Plugin 'altercation/vim-colors-solarized'
+Plugin 'thaerkh/vim-workspace'
+call vundle#end()
+filetype plugin indent on
+" END VUNDLE
+
+set shellslash
+let g:tex_flavor='latex'
+
+"switch to pdflatex
+function SetpdfLaTeX()
+    let g:Tex_CompileRule_pdf = 'pdflatex --interaction=nonstopmode -synctex=1 -src-specials $*'
+endfunction
+noremap <Leader>lp :<C-U>call SetpdfLaTeX()<CR>
+
+"switch to xelatex
+function SetXeLaTeX()
+    let g:Tex_CompileRule_pdf = 'xelatex --interaction=nonstopmode -synctex=1 -src-specials $*'
+endfunction
+noremap <Leader>lx :<C-U>call SetXeLaTeX()<CR>
+
+"colo darkblue
+syntax on
+
+" flazz/vim-colorschemes : molokai, wombat, underwoater, gruvbox, solarized, 
+colorscheme wombat
+
+" Nerdtree
+nnoremap <F6> :NERDTreeToggle<CR>
+
+" for lightline
+set laststatus=2
+" Lightline
+"let g:lightline = { 'colorscheme': 'blue' }
+let g:lightline = {
+		\ 'colorscheme': 'PaperColor_light',
+		\ 'active': {
+		\   'left': [ [ 'mode', 'paste' ], [ 'fugitive', 'filename' ] ]
+		\ },
+		\ 'component_function': {
+		\   'fugitive': 'MyFugitive',
+		\   'filename': 'MyFilename'
+		\ }
+		\ }
+	function! MyModified()
+		return &ft =~ 'help\|vimfiler' ? '' : &modified ? '+' : &modifiable ? '' : '-'
+	endfunction
+	function! MyReadonly()
+		return &ft !~? 'help\|vimfiler' && &readonly ? 'RO' : ''
+	endfunction
+	function! MyFilename()
+		return ('' != MyReadonly() ? MyReadonly() . ' ' : '') .
+		\ (&ft == 'vimfiler' ? vimfiler#get_status_string() :
+		\  &ft == 'unite' ? unite#get_status_string() :
+		\  &ft == 'vimshell' ? vimshell#get_status_string() :
+		\ '' != expand('%:t') ? expand('%:t') : '[No Name]') .
+		\ ('' != MyModified() ? ' ' . MyModified() : '')
+	endfunction
+	function! MyFugitive()
+		if &ft !~? 'vimfiler' && exists("*fugitive#head")
+			return fugitive#head()
+		endif
+		return ''
+	endfunction
+" end Lightline
+"
+

@@ -1,0 +1,113 @@
+"    __   _(_)_ __ ___  _ __ ___
+"    \ \ / / | '_ ` _ \| '__/ __|
+"  _  \ V /| | | | | | | | | (__
+" |_|  \_/ |_|_| |_| |_|_|  \___|
+"
+" Nicholas's .vimrc file
+" Home machine
+" MYVIMRC in ~
+"
+
+syntax on
+set noerrorbells
+set belloff=all
+set tabstop=4 softtabstop=4
+set shiftwidth=4
+set expandtab
+set smartindent
+set nu  "line numbering
+"set nowrap 
+set noswapfile
+set nobackup
+set undodir=~/vimfiles/undodir
+set undofile
+set incsearch
+set encoding=utf-8
+if has("gui_running") 
+    "set guifont=:set guifont=Consolas:h12:cANSI:qDRAFT
+    set guifont=Lucida_Console:h10:cANSI:qDRAFT
+endif
+set colorcolumn=80
+highlight ColorColumn ctermbg=0 guibg=lightgrey
+
+filetype plugin on
+let g:tex_flavor='xelatex'
+let g:Tex_CompileRule_pdf = 'xelatex --interaction=nonstopmode --shell-escape $*'
+autocmd filetype tex setlocal shiftwidth=2 tabstop=2 "automatically change indent to 2 spaces for latex
+"
+"
+"
+"vim-plug
+"  :PlugInstall
+call plug#begin('~/vimfiles/vim-plug-plugins')
+Plug 'morhetz/gruvbox'
+Plug 'scrooloose/nerdtree'
+Plug 'frazrepo/vim-rainbow' "Open and close bracket pair highlighter
+Plug 'itchyny/lightline.vim' "Fancy status bars
+Plug 'tpope/vim-fugitive'
+Plug 'terryma/vim-multiple-cursors'
+Plug 'preservim/nerdcommenter'
+Plug 'vim-latex/vim-latex'
+Plug 'editorconfig/editorconfig-vim'
+Plug 'jremmen/vim-ripgrep'
+Plug 'vim-utils/vim-man' "Linux, Unix, BSD man pages from Vim
+Plug 'lyuts/vim-rtags'
+Plug 'Valloric/YouCompleteMe'
+Plug 'mbbill/undotree'
+Plug 'junegunn/fzf', { 'dir': '~/vimfiles/vim-plug-plugins/.fzf', 'do': './install --all' }
+Plug 'stefandtw/quickfix-reflector.vim' "acts on ripgrep quickfix list and writes changes out to all files
+Plug 'flazz/vim-colorschemes'
+call plug#end()
+
+"lightline
+set laststatus=2
+let g:lightline = {
+      \ 'colorscheme': 'PaperColor_light',
+      \ }
+
+colorscheme gruvbox
+set background=dark
+" removes italic from comments, must be after setting colorscheme 
+highlight Comment cterm=NONE gui=NONE
+
+if executable('rg')
+    let g:rg_derive_root='true'
+endif
+
+"NERDTree
+nmap <F6> :NERDTreeToggle<CR>
+
+"UndoTree
+nnoremap <F5> :UndotreeToggle<CR>
+
+" vim-rainbow  :RainbowToggle
+let g:rainbow_active = 1
+let g:rainbow_load_separately = [
+    \ [ '*' , [['(', ')'], ['\[', '\]'], ['{', '}']] ],
+    \ [ '*.tex' , [['(', ')'], ['\[', '\]']] ],
+    \ [ '*.cpp' , [['(', ')'], ['\[', '\]'], ['{', '}']] ],
+    \ [ '*.{html,htm}' , [['(', ')'], ['\[', '\]'], ['{', '}'], ['<\a[^>]*>', '</[^>]*>']] ],
+    \ ]
+
+let g:rainbow_guifgs = ['RoyalBlue3', 'DarkOrange3', 'DarkOrchid3', 'FireBrick']
+let g:rainbow_ctermfgs = ['lightblue', 'lightgreen', 'yellow', 'red', 'magenta']
+
+" KEY MAPPINGS
+nnoremap <leader>h :wincmd h<CR> " means \h moves the curser to the window to the right
+nnoremap <leader>j :wincmd j<CR>
+nnoremap <leader>k :wincmd k<CR>
+nnoremap <leader>l :wincmd l<CR>
+nnoremap <leader>pv :wincmd v<bar> :Ex <bar> :vertical resize 30<CR>
+nnoremap <silent> <Leader>+ :vertical resize +5<CR>
+nnoremap <silent> <Leader>- :vertical resize -5<CR>
+nnoremap <leader>n :bn<CR> " means \n moves to the next buffer. Current must be saved
+nnoremap <leader>p :bp<CR> " previous buffer
+
+
+"bash
+    let g:ycm_semantic_triggers = {
+        \ 'tex'  : ['{']
+    \}
+
+
+
