@@ -315,6 +315,7 @@ nnoremap <leader>p :bp<CR> " previous buffer
 nnoremap <silent> <leader>ev :e $MYVIMRC<CR>
 nnoremap <silent> <leader>so :w<CR> :so $MYVIMRC<CR>
 nnoremap ; :
+nnoremap : ;
 
 " NERDTree
 " Check if NERDTree is open or active
